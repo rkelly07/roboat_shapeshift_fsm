@@ -22,6 +22,8 @@ class Navigate(smach.State):
         # Load the current trajectory
         counter = userdata.shapeshift_counter
         current_trajectory = userdata.trajectory_list[counter]
+        current_s = current_trajectory['S'] # x,y,theta,xdot,ydot,thetadot
+        current_u = current_trajectory['U'] # xdotdot,ydotdot,thetadotdot
 
         # Publish all of the points in the trajectory so that the tracker node has access
         if not rospy.is_shutdown():
@@ -33,3 +35,4 @@ class Navigate(smach.State):
         time.sleep(10)
 
         return 'success'
+

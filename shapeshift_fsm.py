@@ -9,7 +9,11 @@ from Unlatch import *
 
 Configuration_Sequence = []
 Latching_Sequence = []
-Trajectory_Sequence = []
+Trajectory_Sequence = ['shinkyu1']
+
+def load_obj(self, name):
+    with open('trajectories/' + name + '.pkl', 'rb') as f:
+        return pickle.load(f)
 
 def main():
     rospy.init_node('shapeshift_fsm')
@@ -19,7 +23,7 @@ def main():
     
     sm_main.userdata.configuration_list = Configuration_Sequence
     sm_main.userdata.latching_list = Latching_Sequence
-    sm_main.userdata.trajectory_list = Trajectory_Sequence
+    sm_main.userdata.trajectory_list = [load_obj(name) for name in Trajectory_Sequence]
     sm_main.userdata.config_counter = 0
     sm_main.userdata.shapeshift_counter = 0
     sm_main.intermediate = True
