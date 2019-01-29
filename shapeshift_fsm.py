@@ -6,14 +6,11 @@ from Configuration_Verifier import *
 from Latch import *
 from Navigate import *
 from Unlatch import *
+from utils import *
 
 Configuration_Sequence = []
 Latching_Sequence = []
 Trajectory_Sequence = ['shinkyu1']
-
-def load_obj(self, name):
-    with open('trajectories/' + name + '.pkl', 'rb') as f:
-        return pickle.load(f)
 
 def main():
     rospy.init_node('shapeshift_fsm')

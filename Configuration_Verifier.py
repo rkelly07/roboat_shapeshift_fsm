@@ -3,6 +3,7 @@
 
 import rospy
 import smach
+from utils import *
 
 class Configuration_Verifier(smach.State):
     """
@@ -17,15 +18,11 @@ class Configuration_Verifier(smach.State):
 
     def execute(self, userdata):
         counter = userdata.config_counter
-        current_configuration = userdata.configuration_list[counter]
+        current_configuration = set(userdata.configuration_list[counter])
         current_latch_instructions = userdata.latching_list[counter]
         userdata.config_counter = counter + 1
 
-        # TODO
-        # Read in boat hardware configuration and compare to current configuration
-        # if they are equal then exit otherwise pass current latch instructions to output
-        hardware_configuration = 0
-        if hardware_configuration == current_configuration:
+        hc = get_boat_configuration(1)
+        if verify_configuration(hc, current_configuration):
             return 'completed'
-        else:
-            return 'shapeshift'
+        return 'shapeshift'

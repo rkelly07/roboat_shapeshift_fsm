@@ -4,6 +4,7 @@
 import rospy
 import smach
 import time
+from utils import *
 
 class Navigate(smach.State):
     """
@@ -22,6 +23,7 @@ class Navigate(smach.State):
         # Load the current trajectory
         counter = userdata.shapeshift_counter
         current_trajectory = userdata.trajectory_list[counter]
+        current_goal_configuration = set(userdata.configuration_list[counter])
         current_s = current_trajectory['S'] # x,y,theta,xdot,ydot,thetadot
         current_u = current_trajectory['U'] # xdotdot,ydotdot,thetadotdot
 
@@ -32,7 +34,10 @@ class Navigate(smach.State):
                 self.rate.sleep()
 
         # Wait for the trajectory to finish tracking before returning
-        time.sleep(10)
+        hc = get_boat_configuration(1)
+        while not verify_configuration(hc, current_configuration):
+            time.sleep(0.5)
+            hc = get_boat_configuration(1)
 
         return 'success'
 
